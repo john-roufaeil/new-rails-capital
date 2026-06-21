@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_19_115705) do
-  create_table "movies", force: :cascade do |t|
+ActiveRecord::Schema[8.1].define(version: 2026_06_21_141313) do
+  create_table "editors", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "duration"
-    t.string "title"
+    t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "post_editors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "editor_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_post_editors_on_editor_id"
+    t.index ["post_id"], name: "index_post_editors_on_post_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -23,5 +31,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_115705) do
     t.datetime "created_at", null: false
     t.string "title"
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
+
+  create_table "users", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.date "dob"
+    t.string "email"
+    t.string "name"
+    t.string "phone_number"
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "post_editors", "editors"
+  add_foreign_key "post_editors", "posts"
+  add_foreign_key "posts", "users"
 end
